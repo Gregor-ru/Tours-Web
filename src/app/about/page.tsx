@@ -15,7 +15,7 @@ export default function AboutPage() {
     '/images/about/3.jpg',
     '/images/about/4.jpg',
     '/images/about/5.jpg',
-    '/images/about/6.jpg',
+    '/images/about/6.JPG',
     '/images/about/7.jpg',
     '/images/about/8.jpg',
   ];
@@ -83,7 +83,7 @@ export default function AboutPage() {
 
           <div className="mt-4 text-center">
             <div className="font-bold text-gray-900 text-lg">Егор Гребёнкин</div>
-            <div className="text-sm text-gray-500">Инструктор по горному туризму</div>
+            <div className="text-sm text-gray-500">Инструктор</div>
           </div>
         </div>
 
