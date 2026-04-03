@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+  /* Убирает синюю вспышку при тапе на iOS */
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: #212629;
+  background-color: #ffffff;
+  /* Запрещает горизонтальный скролл всей страницы */
+  overflow-x: hidden;
+}
+
+[id] {
+  scroll-margin-top: 116px;
+}
+
+/* Скрываем скроллбары у горизонтальных блоков */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
