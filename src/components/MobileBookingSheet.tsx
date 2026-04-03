@@ -35,7 +35,7 @@ export default function MobileBookingSheet({ price, dates }: Props) {
 
   const triggerError = () => {
     setShowError(true);
-    setTimeout(() => setShowError(false), 2000);
+    setTimeout(() => setShowError(false), 1300); // Было 2000
   };
 
   const handleBook = () => {
@@ -56,9 +56,9 @@ export default function MobileBookingSheet({ price, dates }: Props) {
     <>
       {/* 1. ПОДСВЕТКА ВНЕШНЕЙ ПЛАНКИ */}
       <div 
-        className={`lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t transition-all duration-500 ${
+        className={`lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t transition-all duration-300 ${
           showError 
-            ? 'border-red-500 shadow-[0_-4px_20px_rgba(224,60,49,0.2)] ring-1 ring-red-500' 
+            ? 'border-red-500 shadow-[0_-10px_30px_rgba(224,60,49,0.3)]' // Усилили тень вверх
             : 'border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]'
         }`}
       >

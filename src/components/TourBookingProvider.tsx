@@ -37,10 +37,10 @@ export function TourBookingProvider({ children }: { children: React.ReactNode })
     if (!el) return;
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     el.style.transition = 'box-shadow 0.2s ease';
-    el.style.boxShadow = '0 0 0 3px #E03C31';
+    el.style.boxShadow = '0 0 0 4px #E03C31'; // Сделал чуть жирнее для заметности
     setTimeout(() => {
       if (el) el.style.boxShadow = '';
-    }, 1400);
+    }, 900); // Было 1400
   }, []);
 
   return (

@@ -32,13 +32,14 @@ export default function AboutPage() {
       </div>
 
       {/* Основной блок */}
-      <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-start">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center md:items-start">
 
         {/* Слайдер фото */}
-        <div className="w-full md:w-80 flex-shrink-0">
+        {/* Добавил mx-auto и ограничил ширину на мобилке до 280px (как на десктопе почти) */}
+        <div className="w-[280px] sm:w-80 flex-shrink-0 group"> 
           <div
-            className="relative rounded-2xl overflow-hidden bg-gray-200 shadow-lg"
-            style={{ height: 'clamp(280px, 70vw, 480px)' }}
+            className="relative rounded-2xl overflow-hidden bg-gray-200 shadow-lg aspect-[3/4]" 
+            // Убрали инлайновый стиль с height: clamp, теперь пропорции через aspect-ratio
           >
             <Image
               src={photos[currentIdx]}
