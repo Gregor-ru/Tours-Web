@@ -23,6 +23,7 @@ interface Props {
 
 export default function MobileBookingSheet({ price, dates }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [showError, setShowError] = useState(false); // Состояние для подсветки ошибки
   const { selectedDate, selectedFormUrl, setSelectedDate } = useBooking();
 
   const selectedLabel = selectedDate
@@ -40,6 +41,17 @@ export default function MobileBookingSheet({ price, dates }: Props) {
       alert('Форма для этой даты скоро появится! Напишите напрямую для записи.');
     }
     setSheetOpen(false);
+  };
+
+  // Обработчик клика по кнопке в шторке
+  const handleSheetSubmit = () => {
+    if (!selectedDate) {
+      setShowError(true);
+      // Убираем подсветку через 2 секунды
+      setTimeout(() => setShowError(false), 2000);
+      return;
+    }
+    handleBook();
   };
 
   return (
@@ -91,12 +103,12 @@ export default function MobileBookingSheet({ price, dates }: Props) {
         <>
           {/* Оверлей */}
           <div
-            className="lg:hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]"
+            className="lg:hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px] transition-opacity"
             onClick={() => setSheetOpen(false)}
           />
 
           {/* Нижняя шторка */}
-          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[80vh] flex flex-col">
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[80vh] flex flex-col transition-transform">
             {/* Ручка */}
             <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
               <div className="w-10 h-1 bg-gray-300 rounded-full" />
@@ -125,16 +137,20 @@ export default function MobileBookingSheet({ price, dates }: Props) {
                     type="button"
                     onClick={() => {
                       setSelectedDate(d.start, d.formUrl);
+                      setShowError(false); // Сбрасываем ошибку при выборе
                       setSheetOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between p-3.5 rounded-xl border-2 transition-all text-left active:scale-[0.98] ${
+                    // Добавили логику подсветки showError:
+                    className={`w-full flex items-center justify-between p-3.5 rounded-xl border-2 transition-all duration-300 text-left active:scale-[0.98] ${
                       isSelected
                         ? 'border-[#E03C31] bg-red-50'
+                        : showError
+                        ? 'border-red-400 bg-red-50/50 shadow-[0_0_0_4px_rgba(224,60,49,0.1)]' // Эффект свечения
                         : 'border-gray-100 bg-gray-50 active:border-gray-300'
                     }`}
                   >
                     <div>
-                      <div className={`font-semibold text-sm ${isSelected ? 'text-[#E03C31]' : 'text-gray-900'}`}>
+                      <div className={`font-semibold text-sm transition-colors ${isSelected ? 'text-[#E03C31]' : 'text-gray-900'}`}>
                         {label}
                       </div>
                       <div className="text-xs text-gray-400">{year}</div>
@@ -154,15 +170,15 @@ export default function MobileBookingSheet({ price, dates }: Props) {
             {/* Кнопка подтверждения */}
             <div className="px-4 py-4 border-t border-gray-100 flex-shrink-0" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
               <button
-                onClick={handleBook}
-                disabled={!selectedDate}
-                className={`w-full py-3.5 rounded-xl font-bold text-base transition-all ${
+                onClick={handleSheetSubmit}
+                // Убрали disabled, чтобы клик мог вызвать ошибку
+                className={`w-full py-3.5 rounded-xl font-bold text-base transition-all active:scale-[0.98] ${
                   selectedDate
-                    ? 'bg-[#E03C31] text-white active:scale-[0.98]'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    ? 'bg-[#E03C31] text-white'
+                    : 'bg-[#E03C31] text-white' // Кнопка всегда выглядит активной, провоцируя клик
                 }`}
               >
-                {selectedDate ? 'Отправить заявку' : 'Выберите дату выше'}
+                Отправить заявку
               </button>
             </div>
           </div>
