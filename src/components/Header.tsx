@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Phone, Menu, X, Mountain } from 'lucide-react';
+import Image from 'next/image'; // Импортируем Image
+import { Phone, Menu, X } from 'lucide-react'; // Убрали Mountain
 
 const NAV_LINKS = [
   { href: '/tours', label: 'Все программы' },
@@ -21,12 +22,21 @@ export default function Header() {
           {/* Логотип */}
           <Link
             href="/tours"
-            className="flex items-center gap-2 text-[#E03C31] shrink-0 max-w-[60vw] sm:max-w-none"
+            className="flex items-center gap-2 shrink-0 max-w-[60vw] sm:max-w-none group"
             onClick={() => setMobileOpen(false)}
           >
-            <Mountain size={22} strokeWidth={2} className="flex-shrink-0" />
+            {/* Обертка для логотипа */}
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
+              <Image
+                src="/logo.jpg" // Путь к файлу в папке public
+                alt="Логотип"
+                fill
+                priority // Загружаем в первую очередь
+                className="object-contain rounded-sm" // Сохраняем пропорции
+              />
+            </div>
+
             <div className="leading-tight overflow-hidden">
-              {/* На мобилке — короткий вариант, на десктопе — полный */}
               <div className="font-bold text-[13px] sm:text-base text-gray-900 truncate">
                 <span className="sm:hidden">Маршруты Егора Гребёнкина</span>
                 <span className="hidden sm:inline">Авторские маршруты от Егора Гребёнкина</span>
@@ -35,7 +45,7 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Десктоп-навигация */}
+          {/* ... остальная часть навигации без изменений ... */}
           <nav className="hidden md:flex items-center gap-6 flex-shrink-0">
             {NAV_LINKS.map((link) => (
               <Link
@@ -48,7 +58,6 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Телефон + иконки */}
           <div className="flex items-center gap-2 flex-shrink-0">
             <a
               href="tel:+79968977532"
@@ -57,7 +66,6 @@ export default function Header() {
               <Phone size={14} />
               +7 (996) 897-75-32
             </a>
-            {/* Мобилка: иконка телефона */}
             <a
               href="tel:+79968977532"
               className="md:hidden p-2 text-gray-600 hover:text-[#E03C31] transition-colors"
@@ -76,7 +84,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Мобильное меню */}
+      {/* Мобильное меню (без изменений) */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
           <nav className="flex flex-col">
@@ -84,7 +92,6 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                // Минимум 48px высоты для удобного тапа
                 className="px-5 py-4 text-base text-gray-800 font-medium border-b border-gray-50 hover:bg-gray-50 hover:text-[#E03C31] transition-colors active:bg-gray-100"
                 onClick={() => setMobileOpen(false)}
               >
