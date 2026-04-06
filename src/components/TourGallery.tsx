@@ -84,10 +84,10 @@ export default function TourGallery({ coverImage, images, title }: Props) {
         </div>
       </div>
 
-      {/* Миниатюры */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+      {/* Миниатюры — overflow-visible чтобы рамка hover не обрезалась */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-3 pb-2">
         <div
-          className="flex gap-2 sm:gap-3 overflow-x-auto pb-1"
+          className="flex gap-2 sm:gap-3 overflow-x-auto overflow-y-visible pb-1 pt-1"
           style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
         >
           {allImages.map((img, idx) => (
