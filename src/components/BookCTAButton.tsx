@@ -1,6 +1,7 @@
 'use client';
 
 import { useBooking } from './TourBookingProvider';
+import { reachGoal } from '@/lib/metrika';
 
 interface Props {
   className?: string;
@@ -12,13 +13,17 @@ export default function BookCTAButton({ className = '', label = 'Отправи�
 
   const handleClick = () => {
     if (!selectedDate) {
+      // Дата не выбрана — подсвечиваем сайдбар
       flashSidebar();
       return;
     }
+
+    // Отправляем цель в Яндекс Метрику
+    reachGoal('booking_click', { date: selectedDate });
+
     if (selectedFormUrl) {
       window.open(selectedFormUrl, '_blank');
     } else {
-      // Google Form ещё не создана — можно убрать когда появятся ссылки
       alert('Форма для этой даты скоро появится! Напишите напрямую для записи.');
     }
   };
