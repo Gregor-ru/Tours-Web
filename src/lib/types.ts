@@ -18,6 +18,8 @@ export interface HourlyItem {
 
 export interface TourDay {
   dayNumber: number;
+  badge?: string; // текст в кружке вместо номера (например «2–7», «чт»)
+  label?: string; // подпись над заголовком вместо «День N» (например «Дни 2–7 · 17–22 января»)
   title: string;
   shortDescription: string;
   fullDescription: string;

@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import YandexMetrika from '@/components/YandexMetrika';
+import CookieNotice from '@/components/CookieNotice';
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <CookieNotice />
       </body>
     </html>
   );

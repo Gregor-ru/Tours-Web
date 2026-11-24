@@ -109,17 +109,22 @@ export default function TourDayPlan({ days }: Props) {
             <div key={day.dayNumber} className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-sm">
               {/* Заголовок */}
               <div className="flex items-center gap-3 p-4 bg-gray-50 border-b border-gray-200">
-                <div className="w-8 h-8 rounded-full bg-[#E03C31] text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
-                  {day.dayNumber}
+                <div className={`h-8 min-w-8 px-1.5 rounded-full bg-[#E03C31] text-white flex items-center justify-center font-bold flex-shrink-0 ${day.badge && day.badge.length > 2 ? 'text-xs' : 'text-sm'}`}>
+                  {day.badge ?? day.dayNumber}
                 </div>
                 <div className="min-w-0">
-                  <div className="text-[10px] text-gray-400 font-semibold uppercase tracking-widest">День {day.dayNumber}</div>
+                  <div className="text-[10px] text-gray-400 font-semibold uppercase tracking-widest">{day.label ?? `День ${day.dayNumber}`}</div>
                   <h3 className="font-semibold text-gray-900 text-sm sm:text-base leading-snug">{day.title}</h3>
                 </div>
               </div>
 
               {/* КРАТКО */}
-              {mode === 'short' && (
+              {mode === 'short' && !day.image && (
+                <div className="p-4 sm:p-6">
+                  <p className="text-sm text-gray-600 leading-relaxed italic">{day.shortDescription}</p>
+                </div>
+              )}
+              {mode === 'short' && day.image && (
                 <div className="flex flex-col sm:grid sm:grid-cols-3">
                   {/* Фото */}
                   <div
@@ -243,7 +248,7 @@ export default function TourDayPlan({ days }: Props) {
                         {day.hourlySchedule.map((item, i) => (
                           <div key={i} className="relative flex gap-3 pb-4 pl-5">
                             <div className="absolute left-[-5px] top-[5px] w-2.5 h-2.5 rounded-full bg-[#E03C31] border-2 border-white" />
-                            <div className="text-xs font-mono text-[#E03C31] font-bold w-10 flex-shrink-0 pt-px">
+                            <div className="text-xs font-mono text-[#E03C31] font-bold min-w-10 whitespace-nowrap flex-shrink-0 pt-px">
                               {item.time}
                             </div>
                             <div className="text-sm text-gray-700 leading-snug">{item.activity}</div>
@@ -270,7 +275,7 @@ export default function TourDayPlan({ days }: Props) {
           {/* Верхняя панель */}
           <div className="absolute top-0 left-0 right-0 p-4 sm:p-6 flex justify-between items-start z-[110]">
             <div className="text-white/80 text-sm font-medium leading-snug pr-8">
-              День {days[lightbox.dayIndex].dayNumber}: {days[lightbox.dayIndex].title}
+              {days[lightbox.dayIndex].label ?? `День ${days[lightbox.dayIndex].dayNumber}`}: {days[lightbox.dayIndex].title}
             </div>
             <button
               className="text-white/70 hover:text-white p-1 flex-shrink-0"
