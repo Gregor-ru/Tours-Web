@@ -1,4 +1,4 @@
-// POST /api/admin/upload — загрузка одного фото из админки (multipart: file, slug).
+// POST /api/admin/upload — загрузка одного фото из админки (multipart: file, slug — программа или organizers).
 // GitHub: фото уходит в репозиторий как blob, в коммит попадёт при «Сохранить».
 // Локально (npm run dev без GitHub): файл пишется сразу в public/images/uploads/.
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -25,7 +25,8 @@ export async function POST(request: Request) {
   const form = await request.formData().catch(() => null);
   const file = form?.get('file');
   const slug = String(form?.get('slug') ?? '');
-  if (!getProgram(slug)) return Response.json({ ok: false, error: 'bad_program' }, { status: 400 });
+  // Папка: slug программы или organizers (фото и логотипы организаторов)
+  if (slug !== 'organizers' && !getProgram(slug)) return Response.json({ ok: false, error: 'bad_program' }, { status: 400 });
   if (!(file instanceof File) || file.size === 0) return Response.json({ ok: false, error: 'no_file' }, { status: 400 });
   if (file.size > MAX_BYTES) return Response.json({ ok: false, error: 'too_large' }, { status: 413 });
 

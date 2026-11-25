@@ -1,20 +1,21 @@
-// Модель «программы» (карточки тура) для каталога. Новая программа = один файл в src/data/programs/
-// и строка в src/data/programs/index.ts. Страницы строятся по шаблону /tours/[slug].
-// Факты — только из docs/FACTS.md; чего нет — в placeholders (на сайте «❓ уточнить»).
+// Модель «программы» (карточки тура) для каталога. Данные — src/data/content/programs.json (правятся на /admin).
+// Страницы строятся по шаблону /tours/[slug]. Чего нет — в placeholders (на сайте «❓ уточнить»).
 
 import type { EquipmentSection, FAQ, TourDay, TourFeature } from '@/lib/types';
 
 export const TODO_OWNER = '❓ уточнить';
 
-export type OrganizerId = 'eg' | 'severny';
+export type OrganizerId = string;
 
 export interface Organizer {
   id: OrganizerId;
   org: string; // как называем организатора на сайте
   person: string;
+  photo: string | null; // фото человека (круглое)
   logo: string | null;
   link: string | null;
   contact: string; // Telegram для связи, если заявка не ушла
+  about?: string; // пара слов о себе — показывается в блоке «Организаторы»
 }
 
 export interface Photo {
@@ -66,7 +67,7 @@ export interface Program {
   equipment?: EquipmentSection[]; // или подробный список вещей по разделам (вместо bring)
   faq?: FAQ[];
   program: TourDay[]; // план по дням — тот же формат и вид, что у Ястребиного (TourDayPlan)
-  organizers: { id: OrganizerId; role: string; photo: string | null }[];
+  organizers: { id: OrganizerId; role: string }[];
   groupSize?: string;
   cover: Photo | null;
   gallery: Photo[]; // все фото идут в галерею наверху страницы (обложка — первой)

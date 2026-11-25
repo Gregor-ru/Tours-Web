@@ -1,0 +1,22 @@
+[
+  {
+    "id": "eg",
+    "org": "Авторские туры от Егора Гребёнкина",
+    "person": "Егор Гребёнкин",
+    "photo": "/images/egor.jpg",
+    "logo": "/logo.jpg",
+    "link": null,
+    "contact": "@gregor_travel_ru",
+    "about": ""
+  },
+  {
+    "id": "severny",
+    "org": "Спортивный комплекс «Северный», Киров",
+    "person": "Максим Слотин",
+    "photo": null,
+    "logo": "/images/logos/severny.jpg",
+    "link": "https://vk.com/sk.severnyy",
+    "contact": "@gregor_travel_ru",
+    "about": ""
+  }
+]

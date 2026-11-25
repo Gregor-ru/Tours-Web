@@ -5,7 +5,7 @@ import type { Program } from '@/lib/programs';
 import { ORGANIZERS } from '@/data/organizers';
 
 export default function ProgramCard({ program: p }: { program: Program }) {
-  const orgs = p.organizers.map((o) => ORGANIZERS[o.id].org);
+  const orgs = p.organizers.map((o) => ORGANIZERS[o.id]?.org).filter(Boolean);
   return (
     <Link href={`/tours/${p.slug}`} className="group block">
       <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all duration-200 bg-white h-full">

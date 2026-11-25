@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import { connection } from 'next/server';
-import { PROGRAMS } from '@/data/programs';
 import { adminConfigured, isAdmin, storageMode } from '@/lib/admin';
 import AdminLogin from '@/components/admin/AdminLogin';
-import PhotoAdmin from '@/components/admin/PhotoAdmin';
+import AdminApp from '@/components/admin/AdminApp';
 
-// Админка фото для владельца: обложка, галерея и фото по дням каждой программы.
+// Админка для владельца: тексты, блоки, план по дням и фото программ, организаторы.
 // Инструкция — ops/2026-11-25_admin-foto.md.
-export const metadata: Metadata = { title: 'Фото программ - админка', robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: 'Редактор сайта', robots: { index: false, follow: false } };
 
 export default async function AdminPage() {
   await connection(); // всегда во время запроса: пароль и вход проверяются при каждом открытии
@@ -21,10 +20,5 @@ export default async function AdminPage() {
   }
   if (!(await isAdmin())) return <AdminLogin />;
 
-  const programs = PROGRAMS.map((p) => ({
-    slug: p.slug,
-    title: p.title,
-    days: p.program.map((d) => ({ label: d.label ?? `День ${d.dayNumber}`, title: d.title })),
-  }));
-  return <PhotoAdmin programs={programs} mode={storageMode()} />;
+  return <AdminApp mode={storageMode()} />;
 }

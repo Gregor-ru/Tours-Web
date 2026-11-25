@@ -1,18 +1,21 @@
 import type { Program } from '@/lib/programs';
-import { gudauri } from './gudauri';
-import { iceClimbing } from './ice-climbing';
-import { gubakha } from './gubakha';
-import { yastrebinoe } from './yastrebinoe';
-import photos from '../photos.json';
-import { applyPhotos, type PhotoLayout } from '@/lib/photo-layout';
+import data from '../content/programs.json';
+import { CONDITIONS_MD, GUBAKHA_CONDITIONS_MD } from '@/data/legal';
 
-// Все программы, которые строятся по шаблону /tours/[slug].
-// Новая программа: файл рядом + строка здесь. Порядок здесь = порядок в каталоге.
-// Фото (обложка, галерея, фото по дням) — из src/data/photos.json, их меняет владелец на /admin.
-// Фото в файлах программ ниже — запасные, на сайте не видны, пока программа есть в photos.json.
-export const PROGRAMS: Program[] = [yastrebinoe, iceClimbing, gudauri, gubakha].map((p) =>
-  applyPhotos(p, (photos as PhotoLayout)[p.slug]),
-);
+// Все программы (тексты, блоки, план по дням, фото) — в src/data/content/programs.json.
+// Их правит владелец на /admin, сохранение — коммитом в GitHub (src/lib/admin.ts).
+// Порядок в файле = порядок в каталоге. Страницы строятся по шаблону /tours/[slug].
+
+// Условия участия — юридические тексты из legal/drafts (scripts/sync-legal.py), в админке не правятся.
+const CONDITIONS: Record<string, string> = {
+  gudauri: CONDITIONS_MD,
+  gubakha: GUBAKHA_CONDITIONS_MD,
+};
+
+export const PROGRAMS: Program[] = (data as unknown as Program[]).map((p) => ({
+  ...p,
+  conditionsMd: CONDITIONS[p.slug],
+}));
 
 export function getProgram(slug: string): Program | undefined {
   return PROGRAMS.find((p) => p.slug === slug);

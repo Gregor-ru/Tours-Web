@@ -6,7 +6,7 @@ import { Check, ExternalLink, UserRound, X } from 'lucide-react';
 import { PROGRAMS, getProgram } from '@/data/programs';
 import { ORGANIZERS } from '@/data/organizers';
 import { TODO_OWNER } from '@/lib/programs';
-import { usedPhotos } from '@/lib/photo-layout';
+import { usedPhotos } from '@/lib/content';
 import LeadForm from '@/components/LeadForm';
 import MobileLeadBar from '@/components/MobileLeadBar';
 import OrgLogo from '@/components/OrgLogo';
@@ -53,7 +53,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const p = getProgram(slug);
   if (!p) notFound();
-  const mainContact = ORGANIZERS[p.organizers[0].id].contact;
+  const mainContact = ORGANIZERS[p.organizers[0]?.id]?.contact ?? '@gregor_travel_ru';
   const leadLabel = p.draft ? 'Узнать первым' : 'Оставить заявку';
   const price = `${p.price.toLocaleString('ru-RU')} ₽`;
 
@@ -232,8 +232,10 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
           <section id="team" className={section}>
             <h2 className={h2}>{p.organizers.length > 1 ? 'Организаторы' : 'Организатор'}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {p.organizers.map(({ id, role, photo }) => {
+              {p.organizers.map(({ id, role }) => {
                 const o = ORGANIZERS[id];
+                if (!o) return null;
+                const photo = o.photo;
                 return (
                   <div key={id} className="rounded-xl border border-gray-200 p-4">
                     <div className="flex items-center gap-2.5 pb-3 mb-3 border-b border-gray-100">
@@ -257,6 +259,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
                         <div className="text-sm text-gray-500">{role}</div>
                       </div>
                     </div>
+                    {o.about && <p className="mt-3 text-sm text-gray-600 leading-relaxed whitespace-pre-line">{o.about}</p>}
                   </div>
                 );
               })}
@@ -282,7 +285,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
               <p className="text-sm text-gray-500 mt-1 mb-5">
                 {p.draft
                   ? 'Даты и детали ещё уточняются. Оставь контакты - напишем, когда всё будет готово.'
-                  : p.organizers[0].id === 'eg'
+                  : p.organizers[0]?.id === 'eg'
                     ? 'Оставь контакты - я свяжусь, расскажу детали и отвечу на вопросы.'
                     : 'Оставь контакты - организаторы свяжутся, расскажут детали и ответят на вопросы.'}
               </p>

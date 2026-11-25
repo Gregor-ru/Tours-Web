@@ -16,7 +16,7 @@
 // Имя на сайте — только имя или «Имя Ф.»: скрипт сокращает его сам и полное ФИО не сохраняет.
 // Аватары не скачиваются. Фото из ВК — только выбранные: скрипт показывает список, по умолчанию не берёт ни одного.
 
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { createInterface } from 'node:readline/promises';
@@ -98,13 +98,7 @@ if (opt.remove) {
 
 // ---------- общее ----------
 function programSlugs() {
-  const slugs = new Set();
-  for (const dir of ['src/data/programs', 'src/data/tours']) {
-    for (const f of readdirSync(join(ROOT, dir)).filter((f) => f.endsWith('.ts'))) {
-      for (const m of readFileSync(join(ROOT, dir, f), 'utf8').matchAll(/slug: '([a-z0-9-]+)'/g)) slugs.add(m[1]);
-    }
-  }
-  return [...slugs];
+  return JSON.parse(readFileSync(join(ROOT, 'src/data/content/programs.json'), 'utf8')).map((p) => p.slug);
 }
 
 function detectSource(url) {
