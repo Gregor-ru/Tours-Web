@@ -6,17 +6,15 @@
     "photo": "/images/egor.jpg",
     "logo": "/logo.jpg",
     "link": null,
-    "contact": "@gregor_travel_ru",
-    "about": ""
+    "contact": "@gregor_travel_ru"
   },
   {
     "id": "severny",
     "org": "Спортивный комплекс «Северный», Киров",
     "person": "Максим Слотин",
-    "photo": null,
+    "photo": "/images/uploads/organizers/20261125135421-754b2d.webp",
     "logo": "/images/logos/severny.jpg",
     "link": "https://vk.com/sk.severnyy",
-    "contact": "@gregor_travel_ru",
-    "about": ""
+    "contact": "@gregor_travel_ru"
   }
 ]
