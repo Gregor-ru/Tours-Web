@@ -1,9 +1,16 @@
+import type { Metadata } from 'next';
 import { PROGRAMS } from '@/data/programs';
 import ProgramCard from '@/components/ProgramCard';
 import { MapPin } from 'lucide-react';
 
-// Разделы каталога. Программы попадают в раздел по полю catalogGroup.
-const GROUPS = ['Санкт-Петербург и Ленобласть', 'Из Кирова', 'Грузия'];
+export const metadata: Metadata = {
+  title: 'Все программы',
+  description: 'Походы, скалолазание, ледолазание и горные лыжи: выезды из Санкт-Петербурга и Кирова, Гудаури. Даты, цены, программа по дням.',
+  alternates: { canonical: '/tours' },
+};
+
+// Разделы каталога — по полю catalogGroup («Раздел каталога» в админке), в порядке программ.
+const GROUPS = [...new Set(PROGRAMS.map((p) => p.catalogGroup))];
 
 export default function ToursPage() {
   return (

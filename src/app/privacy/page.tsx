@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import SimpleMarkdown from '@/components/SimpleMarkdown';
 import { POLICY_TITLE, POLICY_MD } from '@/data/legal';
 
-export const metadata: Metadata = { title: POLICY_TITLE };
+export const metadata: Metadata = { title: POLICY_TITLE, alternates: { canonical: '/privacy' } };
 
 export default function PrivacyPage() {
   return (

@@ -7,6 +7,7 @@ import { PROGRAMS, getProgram } from '@/data/programs';
 import { ORGANIZERS } from '@/data/organizers';
 import { TODO_OWNER } from '@/lib/programs';
 import { usedPhotos } from '@/lib/content';
+import { snippet } from '@/lib/site';
 import LeadForm from '@/components/LeadForm';
 import MobileLeadBar from '@/components/MobileLeadBar';
 import OrgLogo from '@/components/OrgLogo';
@@ -31,9 +32,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const p = getProgram(slug);
   if (!p) return {};
+  const price = `${p.price.toLocaleString('ru-RU')} ₽${p.priceNote ? ` (${p.priceNote})` : ''}`;
+  const description = snippet(`${p.datesLabel}, ${price}. ${p.summary[0] ?? `${p.kind}, ${p.region}.`}`);
   return {
     title: `${p.title}, ${p.datesLabel}`,
-    description: `${p.kind}, ${p.region}. ${p.price.toLocaleString('ru-RU')} ₽${p.priceNote ? ` (${p.priceNote})` : ''}.`,
+    description,
+    alternates: { canonical: `/tours/${p.slug}` },
+    openGraph: {
+      title: p.title,
+      description,
+      url: `/tours/${p.slug}`,
+      ...(p.cover ? { images: [{ url: p.cover.src, alt: p.cover.alt }] } : {}),
+    },
   };
 }
 

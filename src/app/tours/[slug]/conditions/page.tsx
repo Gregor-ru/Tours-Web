@@ -12,7 +12,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const p = getProgram(slug);
-  return p ? { title: `Условия участия — ${p.title}` } : {};
+  return p ? { title: `Условия участия — ${p.title}`, alternates: { canonical: `/tours/${p.slug}/conditions` } } : {};
 }
 
 export default async function ConditionsPage({ params }: { params: Promise<{ slug: string }> }) {

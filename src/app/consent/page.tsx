@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import SimpleMarkdown from '@/components/SimpleMarkdown';
 import { CONSENT_TITLE, CONSENT_MD } from '@/data/legal';
 
-export const metadata: Metadata = { title: CONSENT_TITLE };
+export const metadata: Metadata = { title: CONSENT_TITLE, alternates: { canonical: '/consent' } };
 
 export default function ConsentPage() {
   return (
