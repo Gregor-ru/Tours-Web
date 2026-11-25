@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 // Уведомление о cookie Яндекс Метрики. Информационное: Метрика грузится как раньше.
 // Вариант строже (Метрика только после согласия) — см. legal/notes/2026-11-23_landing-pd.md.
@@ -22,10 +23,11 @@ function isDismissed(): boolean {
 }
 
 export default function CookieNotice() {
+  const pathname = usePathname();
   // На сервере считаем «закрыто», чтобы уведомление не мигало до гидратации
   const dismissed = useSyncExternalStore(subscribe, isDismissed, () => true);
 
-  if (dismissed) return null;
+  if (dismissed || pathname.startsWith('/admin')) return null; // в админке плашка мешает кнопке «Сохранить»
 
   const close = () => {
     try {

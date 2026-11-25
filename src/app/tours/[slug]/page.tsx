@@ -6,6 +6,7 @@ import { Check, ExternalLink, UserRound, X } from 'lucide-react';
 import { PROGRAMS, getProgram } from '@/data/programs';
 import { ORGANIZERS } from '@/data/organizers';
 import { TODO_OWNER } from '@/lib/programs';
+import { usedPhotos } from '@/lib/photo-layout';
 import LeadForm from '@/components/LeadForm';
 import MobileLeadBar from '@/components/MobileLeadBar';
 import OrgLogo from '@/components/OrgLogo';
@@ -265,7 +266,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
 
           <ReviewsBlock slug={p.slug} demoPhotos={p.gallery.slice(0, 3).map((g) => g.src)} />
 
-          <PhotoCredits credits={p.photoCredits} />
+          <PhotoCredits credits={p.photoCredits.filter((c) => usedPhotos(p).includes(c.src))} />
         </div>
 
         {/* Заявка */}

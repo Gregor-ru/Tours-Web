@@ -79,13 +79,13 @@ export const iceClimbing: Program = {
   ],
   // Временные фото со свободной лицензией (Wikimedia Commons), источники — photo-sources.md. Заменить своими.
   photoCredits: [
-    { what: 'обложка', author: 'Dwayne Reilander', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbing_in_the_Canadian_Rockies_1_of_5_-_2022.jpg' },
-    { what: 'Ледолазы на замёрзшем водопаде', author: 'Wilson Hui', license: 'CC BY 2.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbers_on_Frozen_Waterfall_-_Johnston_Canyon_(15634069953).jpg' },
-    { what: 'Ледяная стена', author: 'Dwayne Reilander', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbing_in_the_Canadian_Rockies_2_of_5_-_2022.jpg' },
-    { what: 'Ледолаз на льду', author: 'Dwayne Reilander', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbing_in_the_Canadian_Rockies_3_-_2022.jpg' },
-    { what: 'Ледолаз на ледопаде над заснеженным лесом', author: 'Kristoffer Szilas (KSszilas)', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_climber_in_Norway.JPG' },
-    { what: 'Ледолаз на ледопаде', author: 'Laurel F', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climber_Grotto_Falls_Canmore.jpg' },
-    { what: 'Замёрзший водопад и ледолаз', author: 'Paul Guerin', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbing_Frozen_Waterfall_Gavarnie_France.jpg' },
+    { src: '/images/ice/cover.webp', what: 'обложка', author: 'Dwayne Reilander', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbing_in_the_Canadian_Rockies_1_of_5_-_2022.jpg' },
+    { src: '/images/ice/photo1.webp', what: 'Ледолазы на замёрзшем водопаде', author: 'Wilson Hui', license: 'CC BY 2.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbers_on_Frozen_Waterfall_-_Johnston_Canyon_(15634069953).jpg' },
+    { src: '/images/ice/photo2.webp', what: 'Ледяная стена', author: 'Dwayne Reilander', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbing_in_the_Canadian_Rockies_2_of_5_-_2022.jpg' },
+    { src: '/images/ice/photo3.webp', what: 'Ледолаз на льду', author: 'Dwayne Reilander', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbing_in_the_Canadian_Rockies_3_-_2022.jpg' },
+    { src: '/images/ice/photo4.webp', what: 'Ледолаз на ледопаде над заснеженным лесом', author: 'Kristoffer Szilas (KSszilas)', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_climber_in_Norway.JPG' },
+    { src: '/images/ice/photo5.webp', what: 'Ледолаз на ледопаде', author: 'Laurel F', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climber_Grotto_Falls_Canmore.jpg' },
+    { src: '/images/ice/photo6.webp', what: 'Замёрзший водопад и ледолаз', author: 'Paul Guerin', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Ice_Climbing_Frozen_Waterfall_Gavarnie_France.jpg' },
   ],
   placeholders: [],
   notes: [

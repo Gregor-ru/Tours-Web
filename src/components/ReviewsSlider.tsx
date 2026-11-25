@@ -2,8 +2,24 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, Star, X } from 'lucide-react';
-import { MAX_REVIEW_PHOTOS, type Review } from '@/data/reviews';
+import { ChevronLeft, ChevronRight, ExternalLink, Star, X } from 'lucide-react';
+import { MAX_REVIEW_PHOTOS, SOURCE_LABELS, formatReviewDate, type Review, type ReviewSource } from '@/data/reviews';
+
+// Значок источника: цветная плашка с названием площадки (без логотипов).
+const SOURCE_STYLE: Record<ReviewSource, string> = {
+  site: 'bg-gray-100 text-gray-600',
+  vk: 'bg-[#0077FF]/10 text-[#0062D1]',
+  avito: 'bg-[#00AAFF]/10 text-[#0079B8]',
+  yandex: 'bg-[#FC3F1D]/10 text-[#C42A0F]',
+};
+
+function SourceBadge({ source }: { source: ReviewSource }) {
+  return (
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${SOURCE_STYLE[source]}`}>
+      {SOURCE_LABELS[source]}
+    </span>
+  );
+}
 
 interface Props {
   reviews: Review[];
@@ -20,23 +36,30 @@ function ReviewCard({ review, demo, onOpenPhoto }: { review: Review; demo?: bool
   const [expanded, setExpanded] = useState(false);
   const photos = (review.photos ?? []).slice(0, MAX_REVIEW_PHOTOS);
   const long = review.text.length > LONG_TEXT;
+  const external = review.source !== 'site' && review.url;
+
+  // Клик по карточке внешнего отзыва открывает оригинал (кроме кликов по кнопкам и ссылкам внутри)
+  const onCardClick = (e: React.MouseEvent) => {
+    if (!external || (e.target as HTMLElement).closest('button, a')) return;
+    window.open(review.url, '_blank', 'noopener,noreferrer');
+  };
 
   return (
-    <article className="relative flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-4 sm:p-5">
+    <article onClick={onCardClick}
+      className={`relative flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 ${external ? 'cursor-pointer hover:border-gray-300 hover:shadow-sm transition' : ''}`}>
       {demo && (
         <span className="absolute right-3 top-3 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">пример</span>
       )}
       <header className="flex items-center gap-3">
-        <div className="relative h-11 w-11 flex-shrink-0 overflow-hidden rounded-full bg-gray-100 flex items-center justify-center text-sm font-semibold text-gray-500">
-          {review.avatar ? (
-            <Image src={review.avatar} alt={review.name} fill sizes="44px" className="object-cover" />
-          ) : (
-            initials(review.name)
-          )}
+        <div aria-hidden className="h-11 w-11 flex-shrink-0 rounded-full bg-gray-100 flex items-center justify-center text-sm font-semibold text-gray-500">
+          {initials(review.name)}
         </div>
         <div className="min-w-0">
           <div className="font-semibold text-gray-900 truncate">{review.name}</div>
-          <div className="text-xs text-gray-400">{review.date}</div>
+          <div className="flex flex-wrap items-center gap-1.5 text-xs text-gray-400">
+            <SourceBadge source={review.source} />
+            <span>{demo ? review.date : formatReviewDate(review.date)}</span>
+          </div>
         </div>
         {review.rating && !demo && (
           <div className="ml-auto flex items-center gap-1 text-sm font-semibold text-gray-900" aria-label={`Оценка ${review.rating} из 5`}>
@@ -65,6 +88,13 @@ function ReviewCard({ review, demo, onOpenPhoto }: { review: Review; demo?: bool
             </button>
           ))}
         </div>
+      )}
+
+      {external && (
+        <a href={review.url} target="_blank" rel="noopener noreferrer"
+          className={`${photos.length > 0 ? 'mt-3' : 'mt-auto pt-3'} inline-flex items-center gap-1 self-start text-xs font-medium text-gray-500 hover:text-gray-900`}>
+          Открыть отзыв на {review.source === 'vk' ? 'ВКонтакте' : review.source === 'avito' ? 'Авито' : 'Яндекс Картах'} <ExternalLink size={12} />
+        </a>
       )}
     </article>
   );
@@ -148,13 +178,13 @@ export default function ReviewsSlider({ reviews, demo }: Props) {
       </div>
       {demo && (
         <p className="mb-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">
-          Образец блока: виден только при локальном запуске (npm run dev). На сайте блок появится, когда в src/data/reviews.ts будут настоящие отзывы.
+          Образец блока: виден только при локальном запуске (npm run dev). На сайте отзывы появятся, когда они будут добавлены скриптом review:add.
         </p>
       )}
       <div ref={track} onScroll={updateEdges}
         className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 no-scrollbar sm:mx-0 sm:px-0">
         {reviews.map((r, i) => (
-          <div key={`${r.name}-${i}`} data-card className="w-[85%] flex-shrink-0 snap-start sm:w-[calc(50%-8px)]">
+          <div key={r.id} data-card className="w-[85%] flex-shrink-0 snap-start sm:w-[calc(50%-8px)]">
             <ReviewCard review={r} demo={demo} onOpenPhoto={(photo) => setOpen({ review: i, photo })} />
           </div>
         ))}

@@ -4,38 +4,13 @@
 import { parseLead, validateLead } from '@/lib/lead';
 import { formatLeadMessage, getTelegramConfig, sendToAll } from '@/lib/telegram';
 import { getProgram } from '@/data/programs';
+import { clientIp, createRateLimiter } from '@/lib/rate-limit';
 
 const MIN_FILL_MS = 2000; // быстрее — почти наверняка бот
 const MAX_BODY_BYTES = 10_000;
 
-// Ограничение частоты: не больше RATE_MAX заявок с одного IP за RATE_WINDOW_MS.
-// Хранится в памяти экземпляра функции (на Vercel их может быть несколько и они
-// перезапускаются) — это «мягкая» защита от флуда, не строгая. IP не логируется.
-const RATE_WINDOW_MS = 10 * 60 * 1000;
-const RATE_MAX = 3;
-const hits = new Map<string, number[]>();
-
-function rateLimited(ip: string, now: number): boolean {
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
-  if (recent.length >= RATE_MAX) {
-    hits.set(ip, recent);
-    return true;
-  }
-  recent.push(now);
-  hits.set(ip, recent);
-  if (hits.size > 5000) {
-    for (const [key, times] of hits) {
-      if (times.every((t) => now - t >= RATE_WINDOW_MS)) hits.delete(key);
-    }
-  }
-  return false;
-}
-
-function clientIp(request: Request): string {
-  const fwd = request.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
-  return request.headers.get('x-real-ip') ?? 'unknown';
-}
+// Не больше 3 заявок с одного IP за 10 минут (src/lib/rate-limit.ts).
+const rateLimited = createRateLimiter(3, 10 * 60 * 1000);
 
 function json(status: number, body: Record<string, unknown>) {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });

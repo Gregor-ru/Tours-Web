@@ -23,6 +23,7 @@ export interface Photo {
 }
 
 export interface PhotoCredit {
+  src: string; // какой файл подписываем: подпись видна, только пока фото есть на странице
   what: string;
   author: string;
   license: string; // «CC BY 2.0», «CC0» — ссылка на текст лицензии подставляется сама (components/PhotoCredits)

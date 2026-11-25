@@ -1,38 +1,48 @@
-// Отзывы участников — по программам (ключ — slug: 'yastrebinoe', 'gudauri', 'ice-climbing', 'gubakha').
-// ТОЛЬКО настоящие отзывы и только с согласия автора на публикацию (имя, фото, текст —
-// это персональные данные, см. legal/notes/2026-11-23_landing-pd.md). Не выдумывать.
-//
-// Как добавить отзыв:
-//   1. Фото положить в public/images/reviews/<slug>/ (аватар — квадратный, фото — до 3 штук).
-//   2. Добавить объект в массив нужной программы:
-//      {
-//        name: 'Имя Фамилия',
-//        avatar: '/images/reviews/yastrebinoe/anna.jpg',   // или null — будут инициалы
-//        date: 'июнь 2026',                               // когда был в поездке
-//        text: 'Текст отзыва…',
-//        photos: ['/images/reviews/yastrebinoe/anna-1.jpg'], // не больше 3, лишние не покажутся
-//        rating: 5,                                        // необязательно, 1–5
-//      },
-// Пока у программы нет отзывов, блок «Отзывы» на сайте не показывается.
+// Отзывы участников — одна лента из нескольких источников: сайт, ВКонтакте, Авито, Яндекс Карты.
+// Сами записи лежат в src/data/reviews.json, фото — в public/images/reviews/<id>/ (у нас, не хотлинк).
+// Добавлять и удалять — скриптом, руками JSON не править:
+//   npm run review:add -- <ссылка> --program <slug>            (ВК: текст, имя, дата, фото — через VK API)
+//   npm run review:add -- <ссылка> --name … --date … --text-file … --photos …  (Авито, Яндекс Карты)
+//   npm run review:add -- --source site --program <slug> --name … --text-file …  (отзыв с сайта)
+//   npm run review:remove -- <id>
+// Аватары авторов не показываем и не храним — в карточке инициалы.
+// Инструкция — ops/2026-11-24_otzyvy-skript.md. Не выдумывать отзывы.
+
+import data from './reviews.json';
+
+export type ReviewSource = 'site' | 'vk' | 'avito' | 'yandex';
 
 export interface Review {
-  name: string;
-  avatar: string | null;
-  date: string;
+  id: string;
+  source: ReviewSource;
+  url?: string; // ссылка на оригинал; у отзывов с сайта нет
+  program?: string; // slug программы; нет — общий отзыв, показывается у всех программ
+  name: string; // только имя или «Имя Ф.» — полное ФИО не храним (скрипт сокращает сам)
+  date: string; // ГГГГ-ММ-ДД — дата отзыва
   text: string;
-  photos?: string[];
+  photos?: string[]; // локальные пути /images/reviews/…, не больше 3
   rating?: 1 | 2 | 3 | 4 | 5;
+  test?: boolean; // тестовая запись — в коммит не попадает (скрипт удаляет: review:remove -- --tests)
 }
 
 export const MAX_REVIEW_PHOTOS = 3;
 
-export const REVIEWS: Record<string, Review[]> = {
-  yastrebinoe: [],
-  gudauri: [],
-  'ice-climbing': [],
-  gubakha: [],
+export const REVIEWS = data as Review[];
+
+export const SOURCE_LABELS: Record<ReviewSource, string> = {
+  site: 'Сайт',
+  vk: 'ВКонтакте',
+  avito: 'Авито',
+  yandex: 'Яндекс Карты',
 };
 
+// Отзывы для страницы программы: свои + общие, новые сверху.
 export function getReviews(slug: string): Review[] {
-  return REVIEWS[slug] ?? [];
+  return REVIEWS.filter((r) => !r.program || r.program === slug).sort((a, b) => b.date.localeCompare(a.date));
+}
+
+export function formatReviewDate(iso: string): string {
+  const d = new Date(`${iso}T12:00:00`);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
 }

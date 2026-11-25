@@ -75,3 +75,42 @@ export async function sendToAll(text: string): Promise<{ delivered: number; tota
   const delivered = results.filter((r) => r.status === 'fulfilled').length;
   return { delivered, total: chatIds.length };
 }
+
+// Фото (до 10 штук) одним альбомом во все chat_id. Подпись — у первого фото (до 1024 символов).
+// Возвращает число успешных доставок.
+export async function sendPhotosToAll(
+  photos: { data: Blob; name: string }[],
+  caption: string,
+): Promise<{ delivered: number; total: number }> {
+  const { token, chatIds } = getTelegramConfig();
+  if (photos.length === 0) return { delivered: chatIds.length, total: chatIds.length };
+  const url = `https://api.telegram.org/bot${token}/sendMediaGroup`;
+
+  const results = await Promise.allSettled(
+    chatIds.map(async (chatId, idx) => {
+      const form = new FormData();
+      form.append('chat_id', chatId);
+      form.append(
+        'media',
+        JSON.stringify(
+          photos.map((_, i) => ({ type: 'photo', media: `attach://photo${i}`, ...(i === 0 ? { caption: caption.slice(0, 1024) } : {}) })),
+        ),
+      );
+      photos.forEach((p, i) => form.append(`photo${i}`, p.data, p.name));
+      let res: Response;
+      try {
+        res = await fetch(url, { method: 'POST', body: form, signal: AbortSignal.timeout(20000), cache: 'no-store' });
+      } catch (err) {
+        const reason = err instanceof Error && err.name === 'TimeoutError' ? 'нет ответа за 20 с' : 'ошибка сети';
+        console.error(`[review] telegram photos recipient #${idx + 1}: ${reason}`);
+        throw err;
+      }
+      if (!res.ok) {
+        const info = await res.json().catch(() => ({}));
+        console.error(`[review] telegram photos recipient #${idx + 1}: HTTP ${res.status}`, info?.description ?? '');
+        throw new Error(`HTTP ${res.status}`);
+      }
+    }),
+  );
+  return { delivered: results.filter((r) => r.status === 'fulfilled').length, total: chatIds.length };
+}

@@ -45,3 +45,26 @@
 | cover.webp | [Gubakha_Ski_resort.jpg](<https://commons.wikimedia.org/wiki/File:Gubakha_Ski_resort.jpg>) | Soul Train | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | да |
 | photo1.webp | [Зима_на_горе_Крестовой.jpg](<https://commons.wikimedia.org/wiki/File:Зима_на_горе_Крестовой.jpg>) | Tanya Chernushevich | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | да |
 | photo2.webp | [Gubaha_140304_0013.jpg](<https://commons.wikimedia.org/wiki/File:Gubaha_140304_0013.jpg>) | Andrei Chugunov | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | да |
+
+## Фото от владельца (добавлены 25.11.2026)
+
+### Губаха — `public/images/gubakha/own-01…11.webp`
+
+Свои фото с прошедших туров в Губаху (папка владельца «Фото с проведенных туров»). Подписи не нужны. На фото узнаются участники: публикуются по решению владельца. Согласие людей на фото — ГК РФ ст. 152.1, справка.
+
+### Гудаури — `public/images/gudauri/stock-01…10.webp`
+
+Стоковые фото, которые выбрал владелец (папка «Сток красивые»). Лицензии Pexels и Pixabay разрешают коммерческое использование без подписи. Страницы фото я не открывал — ссылки собраны по номерам из имён файлов.
+
+| Файл | Источник | Автор | Лицензия |
+|---|---|---|---|
+| stock-01.webp | <https://www.pexels.com/photo/34705844/> | Alexander Fadeev | Pexels License |
+| stock-02.webp | <https://www.pexels.com/photo/34705845/> | Alexander Fadeev | Pexels License |
+| stock-03.webp | <https://www.pexels.com/photo/34705850/> | Alexander Fadeev | Pexels License |
+| stock-04.webp | <https://www.pexels.com/photo/34705857/> | Alexander Fadeev | Pexels License |
+| stock-05.webp | <https://www.pexels.com/photo/34718252/> | Alexander Fadeev | Pexels License |
+| stock-06.webp | <https://www.pexels.com/photo/41168973/> | Andrea Albanese | Pexels License |
+| stock-07.webp | <https://www.pexels.com/photo/30604201/> | Anna Khomutova | Pexels License |
+| stock-08.webp | <https://www.pexels.com/photo/33687834/> | iamllwyd | Pexels License |
+| stock-09.webp | <https://www.pexels.com/photo/11531568/> | Nikolina | Pexels License |
+| stock-10.webp | <https://pixabay.com/photos/georgia-5385351/> | thasreef | Pixabay Content License |
